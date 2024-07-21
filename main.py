@@ -30,4 +30,4 @@ async def wrong(command2):
     await command2.send(file=discord.File(imagepath))
 
 
-triviea.run("MTI2NDM3NjM3NTM2ODg4MDIxMA.G02wFL.0Vzx1NMf_mHCLGDDHVFiqNJBBpOfQ69I36N89E")
+triviea.run("-----") #Token for discord bot
