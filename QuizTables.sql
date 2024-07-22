@@ -17,3 +17,13 @@ picture varchar(200),
 
 primary key(picture)
 );
+
+-- Stores userData
+Create Table userData(
+UserID varchar(100),
+correct Integer,
+total Integer,
+anime varchar(200),
+
+primary key(UserID, anime)
+);
