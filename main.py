@@ -140,7 +140,24 @@ async def end(ctx):
     server_id = str(ctx.guild.id)
     if server_id in server_data and ctx.author.id == server_data[server_id]['host']:
 
+        #sorts the hash map into descending order
+        sorted_scores = sorted(server_data[server_id]['server_room'].items(), key=lambda item: item[1], reverse=True)
+
+        leaderboard_message = ""
+
+        for user_id, score in sorted_scores:
+            member = ctx.guild.get_member(int(user_id))
+            username = member.display_name
+            leaderboard_message += f"{username}: {score}/{server_data[server_id]['num']}\n"
+
+
+        await ctx.send("Players | Score")
+        await ctx.send("---------------------------------")
+        await ctx.send(leaderboard_message)
+            
+
         id_list = list(server_data[server_id]['server_room'].keys())
+
         for id in id_list:
             questionBank.insertResults(str(id),server_data[server_id]['server_room'][id], server_data[server_id]['num'], server_data[server_id]['choice'])
         server_data[server_id] = {  # Resets everything
@@ -160,8 +177,8 @@ async def end(ctx):
 @triviea.command()
 async def history(ctx, anime):
     result1, result2 = questionBank.getHistory(ctx.author.id, anime)
-    
     await ctx.send(f"You have gotten {result1}/{result2} in the {anime} quiz game")
+
 
 
 
