@@ -9,12 +9,6 @@ triviea = commands.Bot(command_prefix="!", intents=intents)
 # Dictionary to keep track of server-specific data
 server_data = {}
 
-# For testing purposes to see if the bot is running
-@triviea.event
-async def on_ready():
-
-    print("Bot is running")
-
 # Introduction command
 @triviea.command()
 async def hello(ctx):
@@ -96,7 +90,7 @@ async def current(ctx):
 @triviea.command()
 async def next(ctx):
     server_id = str(ctx.guild.id)
-    if server_id in server_data and ctx.author.id == server_data[server_id]['host']:
+    if server_id in server_data and ctx.author.id == server_data[server_id]['host'] and ctx.author.id in server_data[server_id]['server_room']:
 
         server_data[server_id]['num'] += 1
 
@@ -140,12 +134,36 @@ async def answer(ctx, user_answer: str):
     else:
         await ctx.send("You are not part of this round of the quizzes")
 
-# Turn off the bot
+#ends the game, resets everything
 @triviea.command()
-async def off(ctx):
-    await ctx.send("Shutting down...")
-    await ctx.close()
+async def end(ctx):
+    server_id = str(ctx.guild.id)
+    if server_id in server_data and ctx.author.id == server_data[server_id]['host']:
+
+        id_list = list(server_data[server_id]['server_room'].keys())
+        for id in id_list:
+            questionBank.insertResults(str(id),server_data[server_id]['server_room'][id], server_data[server_id]['num'], server_data[server_id]['choice'])
+        server_data[server_id] = {  # Resets everything
+            'permissions': False,
+            'choice': "",
+            'answer': '',
+            'num': 0,
+            'server_room': {},
+            'host': 0
+        }
+
+        await ctx.send("The game has ended")
+    else:
+        await ctx.send("You cannot end the game since your not the host")
+
+#The User's history regarding the game so far
+@triviea.command()
+async def history(ctx, anime):
+    result1, result2 = questionBank.getHistory(ctx.author.id, anime)
     
+    await ctx.send(f"You have gotten {result1}/{result2} in the {anime} quiz game")
+
+
 
 #A unique token that connects to the discord bot
 triviea.run("-----")
