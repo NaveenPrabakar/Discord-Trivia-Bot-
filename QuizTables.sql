@@ -1,14 +1,113 @@
 use discordbot;
 
 -- Creating the tables for the question bank
+
+-- Table for the anime (Cote)
 Create Table cote(
-question varchar(200),
-answer1 varchar(200),
-answer2 varchar(200),
-answer3 varchar(200),
-correct varchar(200),
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
 primary key(question)
 );
+
+-- Table for the anime black clover
+Create Table blackclover(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+-- Table for the anime naruto
+Create Table naruto(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+-- Table for the game genshin
+Create Table genshin(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+-- table for the anime bleach
+Create Table bleach(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table onepiece(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table roshidere(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table toradora(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table toradora(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table intiald(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table eminanceinshadow(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+
+
 
 -- Stores picture locations of the anime
 Create Table pictures(
