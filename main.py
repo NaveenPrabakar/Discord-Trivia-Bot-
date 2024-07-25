@@ -1,122 +1,120 @@
 import discord
 from discord.ext import commands
+from discord.ui import Button, View
 import questionBank
 
 # Connecting to Discord
 intents = discord.Intents.all()
-triviea = commands.Bot(command_prefix="!", intents=intents)
+trivia = commands.Bot(command_prefix="!", intents=intents)
 
 # Dictionary to keep track of server-specific data
 server_data = {}
 
-# Introduction command
-@triviea.command()
-async def hello(ctx):
-    await ctx.send("Hello! I am the anime Trivia bot. I give out quizzes on various anime. Type the command '!more' for more details")
+# Options: All the shows the user may pick from and the questions available
+option = {
+    "blackclover": 58, "bleach": 42, "cote": 62, "eminanceinshadow": 43,
+    "genshin": 46, "intiald": 53, "naruto": 50, "onepiece": 42,
+    "roshidere": 42, "toradora": 43
+}
 
-    await ctx.send("Hello numan, typical, jamz, saber. I am Trivia Bot. My creator is boruto show")
+# Introduction command
+@trivia.command()
+async def hello(ctx):
+    await ctx.send("**Hello! I am the anime Trivia bot. I give out quizzes on various anime. Type the command '!more' for more details**")
+
+# Options command
+@trivia.command()
+async def options(ctx):
+    await ctx.send("These are the list of anime options to choose from")
+    await ctx.send(f"**{list(option.keys())}**")
 
 # Instruction command
-@triviea.command()
+@trivia.command()
 async def more(ctx):
-    await ctx.send("I provide anime quizzes on various anime. To play, simply type '!anime [anime]' and the questions will be asked.")
-
-    await ctx.send("To answer the questions, just type '!answer [letter of choice]'.")
-
-    await ctx.send("To see your current score, use the command '!current'.")
+    instructions = (
+        "**I provide anime quizzes on various anime. To play, simply type '!anime [anime]' and the questions will be asked.**\n"
+        "**To answer the questions, just type '!answer [letter of choice]'.**\n"
+        "**To see your current score, use the command '!current'.**\n"
+        "**To see your history of scores, use the command '!history [anime name]'.**\n"
+        "**If you would like to explore anime options, use the command '!options'.**"
+    )
+    await ctx.send(instructions)
 
 # Outputs the question and answer choices
-@triviea.command()
+@trivia.command()
 async def anime(ctx, anime):
     server_id = str(ctx.guild.id)
-    image = f"{anime}.png" 
+    image = f"{anime}.png"
+
+    instructions = (f"**This is the {anime} quiz game.**\n"
+                    "-----------------------------------\n\n"
+                    "**Click 'join' to join the game (all members must join or answers will not be recorded).**\n"
+                    "**To continue, click 'next'. To answer, use '!answer [letter of choice]'.**\n"
+                    "-----------------------------------\n\n")
 
     await ctx.send(file=discord.File(image))
-    await ctx.send("This is the current anime quiz game.")
-    await ctx.send("Type '!join' to join the game (all members must join or answers will not be recorded).")
-    await ctx.send("To continue, type '!next'. To answer, use '!answer [letter of choice]'.")
-    await ctx.send(f"You are the host of the game, {ctx.author.display_name}")
+    await ctx.send(instructions)
+    await ctx.send(f"**You are the host of the game, {ctx.author.display_name}**")
 
     # Initialize server-specific game data
-    if server_id not in server_data:
+    server_data[server_id] = {
+        'permissions': True,
+        'choice': anime,
+        'answer': '',
+        'num': 0,
+        'server_room': {},
+        'host': ctx.author.id,
+        'num_questions': questionBank.randomNum(option.get(anime))
+    }
 
-        server_data[server_id] = {
-            'permissions': True,
-            'choice': anime,
-            'answer': '',
-            'num': 0,
-            'server_room': {},
-            'host': ctx.author.id
-        }
 
-    else:
-        server_data[server_id]['permissions'] = True
+    # Define the join and next button
+    join_button = Button(label="Join", style=discord.ButtonStyle.primary)
+    next_button = Button(label="Next", style=discord.ButtonStyle.primary)
 
-        server_data[server_id]['choice'] = anime
+    async def join_callback(interaction):
+        if server_id in server_data and server_data[server_id]['permissions']:
 
-        server_data[server_id]['host'] = ctx.author.id
+            await interaction.response.send_message(f"**You have joined, {interaction.user.display_name}**", ephemeral=True)
+            server_data[server_id]['server_room'][interaction.user.id] = 0
 
-# Joins the "server room" to play the game
-@triviea.command()
-async def join(ctx):
-    server_id = str(ctx.guild.id)
-    if server_id in server_data and server_data[server_id]['permissions']:
+        else:
+            await interaction.response.send_message("**You cannot join at this time**", ephemeral=True)
+    
+    async def next_callback(interaction):
+        if server_id in server_data and interaction.user.id == server_data[server_id]['host'] and interaction.user.id in server_data[server_id]['server_room']:
+            await send_question(interaction, server_id)
+        else:
+            await interaction.response.send_message("**You are not the host or you have not joined the room**", ephemeral=True)
+    
+    join_button.callback = join_callback
+    next_button.callback = next_callback
 
-        await ctx.send(f"You have joined, {ctx.author.display_name}")
+    # Create a View and add the button
+    view = View()
+    view.add_item(join_button)
+    view.add_item(next_button)
 
-        server_data[server_id]['server_room'][ctx.author.id] = 0
-
-    else:
-
-        await ctx.send("You cannot join at this time")
+    # Send the message with the view
+    await ctx.send(view=view)
 
 # Tells the User their current score
-@triviea.command()
+@trivia.command()
 async def current(ctx):
 
     server_id = str(ctx.guild.id)
+
     if server_id in server_data and ctx.author.id in server_data[server_id]['server_room']:
 
         score = server_data[server_id]['server_room'][ctx.author.id]
-
         num = server_data[server_id]['num']
-
-        await ctx.send(f"Your current score is: {score}/{num}")
+        await ctx.send(f"**Your current score is: {score}/{num}**")
 
     else:
-        await ctx.send("You are not part of this round of the quizzes or the game has not started.")
+        await ctx.send("**You are not part of this round of the quizzes or the game has not started.**")
 
-# Moves on to the next question and saves what is the correct answer
-@triviea.command()
-async def next(ctx):
-    server_id = str(ctx.guild.id)
-    if server_id in server_data and ctx.author.id == server_data[server_id]['host'] and ctx.author.id in server_data[server_id]['server_room']:
-
-        server_data[server_id]['num'] += 1
-
-        server_data[server_id]['permissions'] = False  # Close the server rooms
-
-        results = questionBank.question(server_data[server_id]['choice'])
-
-        for row in results:
-            question = row[0]
-
-            answer1 = row[1]
-
-            answer2 = row[2]
-
-            answer3 = row[3]
-
-            server_data[server_id]['answer'] = row[4]
-
-            await ctx.send(f"{question}\n{answer1}\n{answer2}\n{answer3}")
-    else:
-        await ctx.send("You are not the host or you have not joined the room")
-
-
-
-# Checks if the user's answer is correct (FIX THE SCORING SYSTEM)
-@triviea.command(aliases=['A', 'B', 'C'])
+# Checks if the user's answer is correct
+@trivia.command(aliases=['A', 'B', 'C'])
 async def answer(ctx, user_answer: str):
 
     server_id = str(ctx.guild.id)
@@ -124,58 +122,107 @@ async def answer(ctx, user_answer: str):
     if server_id in server_data and ctx.author.id in server_data[server_id]['server_room']:
 
         if user_answer.strip().upper() == server_data[server_id]['answer'].strip().upper():
-
-            await ctx.send("Correct!")
+            await ctx.send("Correct!", ephemeral=True)
             server_data[server_id]['server_room'][ctx.author.id] += 1
 
         else:
-            await ctx.send("Incorrect!")
-            await ctx.send(f"The correct answer was {server_data[server_id]['answer']}")
+            await ctx.send(f"**Incorrect, {ctx.author.display_name}!**", ephemeral=True)
+            await ctx.send(f"The correct answer was {server_data[server_id]['answer']}", ephemeral=True)
+
     else:
         await ctx.send("You are not part of this round of the quizzes")
 
-#ends the game, resets everything
-@triviea.command()
+# Ends the game, resets everything
+@trivia.command()
 async def end(ctx):
+
     server_id = str(ctx.guild.id)
     if server_id in server_data and ctx.author.id == server_data[server_id]['host']:
 
-        #sorts the hash map into descending order
-        sorted_scores = sorted(server_data[server_id]['server_room'].items(), key=lambda item: item[1], reverse=True)
+        await ctx.send("**The game is over!**")
+        leaderboard_message = get_leaderboard(server_id, ctx)
+        await ctx.send("**Players | Score**")
+        await ctx.send("**---------------------------------**")
+        await ctx.send(f"{leaderboard_message}\n")
+        reset(server_id)
 
-        leaderboard_message = ""
-
-        for user_id, score in sorted_scores:
-            member = ctx.guild.get_member(int(user_id))
-            username = member.display_name
-            leaderboard_message += f"{username}: {score}/{server_data[server_id]['num']}\n"
-
-
-        await ctx.send("Players | Score")
-        await ctx.send("---------------------------------")
-        await ctx.send(leaderboard_message)
-            
-
-        id_list = list(server_data[server_id]['server_room'].keys())
-
-        for id in id_list:
-            questionBank.insertResults(str(id),server_data[server_id]['server_room'][id], server_data[server_id]['num'], server_data[server_id]['choice'])
-        server_data[server_id] = {  # Resets everything
-            'permissions': False,
-            'choice': "",
-            'answer': '',
-            'num': 0,
-            'server_room': {},
-            'host': 0
-        }
-
-        await ctx.send("The game has ended")
     else:
-        await ctx.send("You cannot end the game since your not the host")
+        await ctx.send("You cannot end the game since you're not the host")
 
-#The User's history regarding the game so far
-@triviea.command()
+# Helper function to send the next question
+async def send_question(interaction, server_id):
+    results = questionBank.question(
+
+        server_data[server_id]['choice'],
+        server_data[server_id]['num_questions'],
+        server_data[server_id]['num']
+
+    )
+    server_data[server_id]['permissions'] = False  # Close the server rooms
+
+    for row in results:
+
+        question, answer1, answer2, answer3, correct_answer = row
+
+        server_data[server_id]['answer'] = correct_answer
+
+        next_button = Button(label="Next", style=discord.ButtonStyle.primary)
+    
+        async def next_callback(interaction):
+
+            if server_id in server_data and interaction.user.id == server_data[server_id]['host']:
+
+                await send_question(interaction, server_id)
+
+            else:
+                await interaction.response.send_message("**You are not the host or you have not joined the room**", ephemeral=True)
+        
+        next_button.callback = next_callback
+        
+        view = View()
+        view.add_item(next_button)
+
+        await interaction.response.send_message(f"{question}\n{answer1}\n{answer2}\n{answer3}", view=view)
+
+        server_data[server_id]['num'] += 1
+
+
+# Helper function to reset the game data
+def reset(server_id):
+
+    for user_id in server_data[server_id]['server_room']:
+        questionBank.insertResults(str(user_id),server_data[server_id]['server_room'][user_id],server_data[server_id]['num'],
+           server_data[server_id]['choice']
+        )
+
+    server_data[server_id] = {
+        'permissions': False,
+        'choice': "",
+        'answer': '',
+        'num': 0,
+        'server_room': {},
+        'host': 0,
+        'num_questions': 0
+    }
+
+# Helper function to get the leaderboard
+def get_leaderboard(server_id, ctx):
+
+    sorted_scores = sorted(server_data[server_id]['server_room'].items(), key=lambda item: item[1], reverse=True)
+    leaderboard_message = ""
+
+    for user_id, score in sorted_scores:
+
+        member = ctx.guild.get_member(int(user_id))
+        username = member.display_name 
+        leaderboard_message += f"{username}: {score}/{server_data[server_id]['num']}\n"
+
+    return leaderboard_message
+
+# The User's history regarding the game so far
+@trivia.command()
 async def history(ctx, anime):
+
     result1, result2 = questionBank.getHistory(ctx.author.id, anime)
     await ctx.send(f"You have gotten {result1}/{result2} in the {anime} quiz game")
 
@@ -183,4 +230,4 @@ async def history(ctx, anime):
 
 
 #A unique token that connects to the discord bot
-triviea.run("-----")
+trivia.run("-----")
