@@ -4,17 +4,17 @@ import random
 #Implement  a working question bank
 
 db = mysql.connector.connect( #connects to MySQL Server for data to be accessed
-    host = "localhost",
+    host = "host.docker.internal",
     user = "root",
-    password = "xxxxxxxxx"
+    password = "xxxxxxxx"
 )
 
 mycursor = db.cursor()
 mycursor.execute("Use discordbot") #connects to database
 
-def question(anime):
+def question(anime, list, nums):
     #pick = anime.lstrip('!') #fix this line
-    num = randomNum() - 1
+    num = list[nums]
 
     sql = f"SELECT * FROM {anime} LIMIT 1 OFFSET %s" #query statement
 
@@ -42,8 +42,6 @@ def insertResults(id, correct, total, anime):
     mycursor.execute(sql, (id,anime))
 
     results = mycursor.fetchone()[0]
-
-    print(results)
 
     if results == 0:
         query = "Insert into userData (UserID, correct, total, anime) values (%s, %s, %s, %s)"
@@ -76,10 +74,16 @@ def getHistory(id, anime):
 
     return result1, result2
 
-#gets random num between one and 15
-def randomNum():
-    num = random.randint(1,15)
-    return num
+#Creates a random number sequences
+def randomNum(num):
+
+    random_sequence = random.sample(range(1, num + 1), num)
+
+    array = random_sequence
+
+    return array
+
+
 
 
 
