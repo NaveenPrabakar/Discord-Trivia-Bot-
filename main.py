@@ -44,7 +44,7 @@ async def more(ctx):
 @trivia.command()
 async def anime(ctx, anime):
     server_id = str(ctx.guild.id)
-    image = f"{anime}.png"
+    image = f"pictures/{anime}.png"
 
     instructions = (f"**This is the {anime} quiz game.**\n"
                     "-----------------------------------\n\n"
@@ -108,29 +108,11 @@ async def current(ctx):
 
         score = server_data[server_id]['server_room'][ctx.author.id]
         num = server_data[server_id]['num']
-        await ctx.send(f"**Your current score is: {score}/{num}**")
+        await ctx.send(f"**Your current score is: {score}/{num-1}**")
 
     else:
         await ctx.send("**You are not part of this round of the quizzes or the game has not started.**")
 
-# Checks if the user's answer is correct
-@trivia.command(aliases=['A', 'B', 'C'])
-async def answer(ctx, user_answer: str):
-
-    server_id = str(ctx.guild.id)
-
-    if server_id in server_data and ctx.author.id in server_data[server_id]['server_room']:
-
-        if user_answer.strip().upper() == server_data[server_id]['answer'].strip().upper():
-            await ctx.send("Correct!", ephemeral=True)
-            server_data[server_id]['server_room'][ctx.author.id] += 1
-
-        else:
-            await ctx.send(f"**Incorrect, {ctx.author.display_name}!**", ephemeral=True)
-            await ctx.send(f"The correct answer was {server_data[server_id]['answer']}", ephemeral=True)
-
-    else:
-        await ctx.send("You are not part of this round of the quizzes")
 
 # Ends the game, resets everything
 @trivia.command()
@@ -151,40 +133,65 @@ async def end(ctx):
 
 # Helper function to send the next question
 async def send_question(interaction, server_id):
-    results = questionBank.question(
 
-        server_data[server_id]['choice'],
-        server_data[server_id]['num_questions'],
-        server_data[server_id]['num']
+    results = questionBank.question(server_data[server_id]['choice'], server_data[server_id]['num_questions'],server_data[server_id]['num'])
 
-    )
     server_data[server_id]['permissions'] = False  # Close the server rooms
 
     for row in results:
-
         question, answer1, answer2, answer3, correct_answer = row
-
         server_data[server_id]['answer'] = correct_answer
 
+        #Creating the buttons
         next_button = Button(label="Next", style=discord.ButtonStyle.primary)
-    
-        async def next_callback(interaction):
+        A_button = Button(label="A", style=discord.ButtonStyle.green, custom_id = "A")
+        B_button = Button(label="B", style=discord.ButtonStyle.red, custom_id = "B")
+        C_button = Button(label="C", style=discord.ButtonStyle.grey, custom_id = "C")
 
+        async def next_callback(interaction):
             if server_id in server_data and interaction.user.id == server_data[server_id]['host']:
 
                 await send_question(interaction, server_id)
 
             else:
+
                 await interaction.response.send_message("**You are not the host or you have not joined the room**", ephemeral=True)
-        
+
+        async def answer_callback(interaction):
+
+            await checkanswer(server_id, interaction)
+
         next_button.callback = next_callback
-        
+        A_button.callback = answer_callback
+        B_button.callback = answer_callback
+        C_button.callback = answer_callback
+
         view = View()
         view.add_item(next_button)
+        view.add_item(A_button)
+        view.add_item(B_button)
+        view.add_item(C_button)
 
         await interaction.response.send_message(f"{question}\n{answer1}\n{answer2}\n{answer3}", view=view)
-
         server_data[server_id]['num'] += 1
+
+#checks if the user chose the right answer
+async def checkanswer(server_id, interaction):
+
+    if server_id in server_data and interaction.user.id in server_data[server_id]['server_room']:
+
+
+        if interaction.data['custom_id'].strip().upper() == server_data[server_id]['answer'].strip().upper():
+
+            await interaction.response.send_message("Correct!")
+            server_data[server_id]['server_room'][interaction.user.id] += 1  # Increment score if correct
+
+        else:
+
+            await interaction.response.send_message(f"Incorrect! The answer was {server_data[server_id]['answer']}", ephemeral = True)
+    else:
+        await interaction.response.send_message("You are not part of this round of the quizzes")
+
 
 
 # Helper function to reset the game data
@@ -225,6 +232,9 @@ async def history(ctx, anime):
 
     result1, result2 = questionBank.getHistory(ctx.author.id, anime)
     await ctx.send(f"You have gotten {result1}/{result2} in the {anime} quiz game")
+
+
+
 
 
 
