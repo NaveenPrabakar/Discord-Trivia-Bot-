@@ -7,6 +7,8 @@ import questionBank
 intents = discord.Intents.all()
 trivia = commands.Bot(command_prefix="!", intents=intents)
 
+#ISSUES TO FIX: FIX CSV FILES, NO DUPLICATES OR BUTTONS WON'T WORK
+
 # Dictionary to keep track of server-specific data
 server_data = {}
 
@@ -14,7 +16,9 @@ server_data = {}
 option = {
     "blackclover": 58, "bleach": 42, "cote": 62, "eminanceinshadow": 43,
     "genshin": 46, "intiald": 53, "naruto": 50, "onepiece": 42,
-    "roshidere": 42, "toradora": 43
+    "roshidere": 42, "toradora": 43, "attackontitan": 46, "aoaishi":42, 
+    "bluelock": 41, "deathnote":44,  "demonslayer":44,  
+     "haikyuu": 43, "hunterxhunter": 46, "jjk": 44
 }
 
 # Introduction command
@@ -143,7 +147,7 @@ async def send_question(interaction, server_id):
         server_data[server_id]['answer'] = correct_answer
 
         #Creating the buttons
-        next_button = Button(label="Next", style=discord.ButtonStyle.primary)
+        next_button = Button(label="Next", style= discord.ButtonStyle.primary)
         A_button = Button(label="A", style=discord.ButtonStyle.green, custom_id = "A")
         B_button = Button(label="B", style=discord.ButtonStyle.red, custom_id = "B")
         C_button = Button(label="C", style=discord.ButtonStyle.grey, custom_id = "C")
@@ -166,13 +170,14 @@ async def send_question(interaction, server_id):
         B_button.callback = answer_callback
         C_button.callback = answer_callback
 
-        view = View()
-        view.add_item(next_button)
+        view = discord.ui.View(timeout= None)
         view.add_item(A_button)
         view.add_item(B_button)
         view.add_item(C_button)
+        view.add_item(next_button)
 
         await interaction.response.send_message(f"{question}\n{answer1}\n{answer2}\n{answer3}", view=view)
+    
         server_data[server_id]['num'] += 1
 
 #checks if the user chose the right answer
@@ -181,7 +186,7 @@ async def checkanswer(server_id, interaction):
     if server_id in server_data and interaction.user.id in server_data[server_id]['server_room']:
 
 
-        if interaction.data['custom_id'].strip().upper() == server_data[server_id]['answer'].strip().upper():
+        if interaction.data['custom_id'] == server_data[server_id]['answer'].strip().upper():
 
             await interaction.response.send_message("Correct!")
             server_data[server_id]['server_room'][interaction.user.id] += 1  # Increment score if correct
