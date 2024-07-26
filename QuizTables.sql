@@ -106,6 +106,97 @@ correct varchar(500),
 primary key(question)
 );
 
+Create Table attackontitan(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table hunterxhunter(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table jjk(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table deathnote(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table demonslayer(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table drstone(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table fate(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table aoaishi(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table bluelock(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+Create Table haikyuu(
+question varchar(500),
+answer1 varchar(500),
+answer2 varchar(500),
+answer3 varchar(500),
+correct varchar(500),
+primary key(question)
+);
+
+
 
 
 
@@ -126,3 +217,4 @@ anime varchar(200),
 
 primary key(UserID, anime)
 );
+
