@@ -57,8 +57,74 @@ fields terminated by ','
 enclosed by '"'
 Lines terminated by '\n';
 
-Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\eminanceInshadow.csv' ignore
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\eminanceInshadow.csv' 
 into table eminanceinshadow
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\attackontitan.csv'
+into table attackontitan
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\hunterxhunter.csv' 
+into table hunterxhunter
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\jjk.csv' 
+into table jjk
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\deathnote.csv' 
+into table deathnote
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\demonslayer.csv' 
+into table demonslayer
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\drstone.csv' 
+into table drstone
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\drstone.csv' 
+into table drstone
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\fate.csv' 
+into table fate
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\aoaishi.csv' 
+into table aoaishi
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\bluelock.csv' 
+into table bluelock
+fields terminated by ','
+enclosed by '"'
+Lines terminated by '\n';
+
+Load data infile 'C:\\ProgramData\\MySQL\\MySQL Server 8.3\\Uploads\\haikyuu.csv' 
+into table haikyuu
 fields terminated by ','
 enclosed by '"'
 Lines terminated by '\n';
@@ -67,9 +133,23 @@ Lines terminated by '\n';
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 -- Inserts picture locations to table
 Insert into pictures(anime, picture)
 Value('cote', 'cote.png');
+
+
+
 
 
 
