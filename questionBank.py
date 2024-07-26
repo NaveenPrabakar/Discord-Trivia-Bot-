@@ -13,8 +13,10 @@ mycursor = db.cursor()
 mycursor.execute("Use discordbot") #connects to database
 
 def question(anime, list, nums):
-    #pick = anime.lstrip('!') #fix this line
+
     num = list[nums]
+
+    print(num)
 
     sql = f"SELECT * FROM {anime} LIMIT 1 OFFSET %s" #query statement
 
@@ -74,18 +76,13 @@ def getHistory(id, anime):
 
     return result1, result2
 
-#Creates a random number sequences
+#Creates a random number sequences (FIX THIS)
 def randomNum(num):
 
-    random_sequence = random.sample(range(1, num + 1), num)
+    random_sequence = list(range(1,num))
 
-    array = random_sequence
+    random.shuffle(random_sequence)
 
-    return array
-
-
-
-
-
+    return random_sequence
 
 
