@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, View
 import questionBank
+import Translate
 
 # Connecting to Discord
 intents = discord.Intents.all()
@@ -44,6 +45,20 @@ async def more(ctx):
     )
     await ctx.send(instructions)
 
+# Language converter
+@trivia.command()
+async def language(ctx, choice):
+    server_id = str(ctx.guild.id)
+
+    if server_id in server_data and server_data[server_id]['permissions']:
+        if server_data[server_id]['host'] == ctx.author.id:
+            server_data[server_id]['language'] = Translate.language(choice)
+            await ctx.send(f"Language has been succesfully changed to {choice}")
+        else:
+            await ctx.send("You are not the host")
+    else:
+        await ctx.send("You are not in the game")
+
 # Outputs the question and answer choices
 @trivia.command()
 async def anime(ctx, anime):
@@ -54,6 +69,7 @@ async def anime(ctx, anime):
                     "-----------------------------------\n\n"
                     "**Click 'join' to join the game (all members must join or answers will not be recorded).**\n"
                     "**To continue, click 'next'. To answer, use '!answer [letter of choice]'.**\n"
+                    "** If you want to change languages, then use the command '!language' [name of language]\n**"
                     "-----------------------------------\n\n")
 
     await ctx.send(file=discord.File(image))
@@ -62,13 +78,14 @@ async def anime(ctx, anime):
 
     # Initialize server-specific game data
     server_data[server_id] = {
-        'permissions': True,
-        'choice': anime,
-        'answer': '',
-        'num': 0,
-        'server_room': {},
-        'host': ctx.author.id,
-        'num_questions': questionBank.randomNum(option.get(anime))
+        'permissions': True, #permissions boolean
+        'choice': anime, #The choice of anime
+        'answer': '', #Correct answer for question
+        'num': 0, #Number of questions answered so far
+        'server_room': {}, #The server room of people playing the game
+        'host': ctx.author.id, #host of the game(The one who started the game)
+        'num_questions': questionBank.randomNum(option.get(anime)), #Random sequence
+        'language': 'en' #Language choice
     }
 
 
@@ -176,7 +193,13 @@ async def send_question(interaction, server_id):
         view.add_item(C_button)
         view.add_item(next_button)
 
-        await interaction.response.send_message(f"{question}\n{answer1}\n{answer2}\n{answer3}", view=view)
+        final = f"{question}\n{answer1}\n{answer2}\n{answer3}"
+
+        #translates the questions to language, if selected language isn't english
+        if(server_data[server_id]['language'] != 'en'):
+            final = Translate.change(final, server_data[server_id]['language'])
+
+        await interaction.response.send_message(final, view=view)
     
         server_data[server_id]['num'] += 1
 
