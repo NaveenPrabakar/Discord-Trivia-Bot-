@@ -76,20 +76,33 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
    ```bash
    docker build -t discord-trivia-bot .
    docker run -d discord-trivia-bot
+![image](https://github.com/user-attachments/assets/81309308-1c24-48f3-9a17-df0f423a4e9c)
+
 
 ## Usage
 
 ### Commands
 
 - **!hello**: Greets the user and provides an introduction to the bot.
+-  ![image](https://github.com/user-attachments/assets/5236775c-5f53-4720-bd44-ccc75376b05b)
+-  **!more**: well tell you more info about the bot
+-  ![image](https://github.com/user-attachments/assets/35146f7e-b7eb-47e4-a29e-c0a5c2bc0525)
 - **!options**: Displays a list of available anime topics for the quiz.
-- **!quiz [anime_name]**: Starts a quiz on the specified anime. The bot uses the **!options** dictionary to retrieve and present questions.
+- ![image](https://github.com/user-attachments/assets/9e46ec91-4773-43d0-bc62-fbb751cffa7f)
+- **!anime [anime_name]**: Starts a quiz on the specified anime. The bot uses the **!options** dictionary to retrieve and present questions.
+- ![image](https://github.com/user-attachments/assets/b3313de5-e01f-4ced-9b5d-965eb03b9949)
+- ![image](https://github.com/user-attachments/assets/16480f9a-272a-45a3-b111-93e5e83070ea)
 - **!history [anime_name]**: Provides the User's history of what scores they have had so far in that anime
+- ![image](https://github.com/user-attachments/assets/ac2b6d03-92ea-4d53-ab03-344dd24a7182)
 - **!language [language]**: Translates questions to the User's language preference
+- ![image](https://github.com/user-attachments/assets/de02c614-4595-4c15-9b93-185c8f162b9a)
+
 
 ### Host commands
 
-- **!end**: ends the on going game
+- **!end**: ends the on going game and outputs leaderboard
+![image](https://github.com/user-attachments/assets/3e69fafd-345c-4d62-a7c4-034b3dd74013)
+
 - **Next Button**: Goes to the next question
 
 ### UI
