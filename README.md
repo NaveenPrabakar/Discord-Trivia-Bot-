@@ -100,8 +100,8 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
 
 ### Host commands
 
-- **!end**: ends the on going game and outputs leaderboard
-![image](https://github.com/user-attachments/assets/3e69fafd-345c-4d62-a7c4-034b3dd74013)
+- **!end**: ends the on going game and outputs leaderboard.
+- ![image](https://github.com/user-attachments/assets/3e69fafd-345c-4d62-a7c4-034b3dd74013)
 
 - **Next Button**: Goes to the next question
 
