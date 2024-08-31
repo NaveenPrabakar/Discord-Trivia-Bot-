@@ -39,62 +39,18 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
    git clone https://github.com/NaveenPrabakar/Discord-Anime-Trivia-Bot.git
    cd Discord-Anime-Trivia-Bot
 
-
-Install dependencies:
-bash
-Copy code
+#### Install Dependencies
+```bash
 pip install -r requirements.txt
-Set Up the MySQL Database
-Import the SQL schema from QuizTables.sql to create the necessary tables:
-bash
-Copy code
+
+#### Set Up the MySQL Database
+```bash
 source /path/to/QuizTables.sql;
-Load quiz questions using LoadQuestions.sql:
-bash
-Copy code
+
+```bash
 source /path/to/LoadQuestions.sql;
-Configure the Bot
-Create a .env file and add your Discord bot token:
-env
-Copy code
-DISCORD_TOKEN=your_discord_bot_token
-Set up your MySQL connection details in main.py:
-python
-Copy code
-connection = mysql.connector.connect(
-    host="your_host",
-    user="your_user",
-    password="your_password",
-    database="your_database"
-)
-Run the Bot
-bash
-Copy code
-python main.py
-Optional - Docker Setup
-Build and run the Docker container:
-bash
-Copy code
-docker build -t discord-trivia-bot .
-docker run -d discord-trivia-bot
-Usage
-Commands
-!hello: Greets the user and provides an introduction to the bot.
-!options: Displays a list of available anime topics for the quiz.
-!quiz [anime_name]: Starts a quiz on the specified anime. The bot uses the option dictionary to retrieve and present questions.
-!score: Shows the user's current score, tracked in the server_data dictionary.
-!leaderboard: Displays the top scores, managed by the min_heap priority queue.
-Admin Commands
-!add_question [anime_name] [question] [correct_option] [wrong_option_1] [wrong_option_2] [wrong_option_3]: Adds a new question to the database.
-!remove_question [anime_name] [question_id]: Removes a question from the database.
-Project Structure
-main.py: The main script that initializes the bot, defines commands, and manages server-specific data and interactions.
-questionBank.py: Handles the database operations, including fetching questions and storing new entries.
-Translate.py: Integrates Google Translate API to translate questions into different languages based on user preference.
-LoadQuestions.sql: A SQL script that populates the database with initial quiz questions.
-QuizTables.sql: A SQL script that defines the structure of the MySQL tables used by the bot.
-Contribution
-Contributions are welcome! If you have ideas for new features or improvements, please fork the repository and submit a pull request.
+
+
 
 
 
