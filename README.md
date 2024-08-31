@@ -39,20 +39,36 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
    git clone https://github.com/NaveenPrabakar/Discord-Anime-Trivia-Bot.git
    cd Discord-Anime-Trivia-Bot
 
-#### Install Dependencies
-```bash
-pip install -r requirements.txt
+2. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
 
-#### Set Up the MySQL Database
-```bash
-source /path/to/QuizTables.sql;
+3. **Set Up the MySQL Database:**
+   ```bash
+   source /path/to/QuizTables.sql;
+   source /path/to/LoadQuestions.sql;
 
-```bash
-source /path/to/LoadQuestions.sql;
+4. **Congfigure the bot:**
+   ```env
+   DISCORD_TOKEN=your_discord_bot_token
 
+5. **Set up your MySQL connection details in main.py:**
+   ```python
+   connection = mysql.connector.connect(
+    host="your_host",
+    user="your_user",
+    password="your_password",
+    database="your_database"
+   )
 
+6. **Run the Bot:**
+   ```bash
+   python main.py
 
+7. **Build Docker container:**
+   ```bash
+   docker build -t discord-trivia-bot .
+   docker run -d discord-trivia-bot
 
-
-
+   
 
