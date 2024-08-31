@@ -18,10 +18,17 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
 - **Dictionaries (`dict`):**
   - **`server_data`:** Manages server-specific data, such as active quizzes and user scores. Each key represents a server ID, with the value being another dictionary containing quiz data for that server.
   - **`option`:** Maps anime names to the number of available questions, allowing the bot to dynamically fetch questions based on the user's choice.
+ 
+ ![Screenshot 2024-08-31 102233](https://github.com/user-attachments/assets/a7d64e62-2d17-40eb-bb35-6d8c838ab1d1)
+ ![Screenshot 2024-08-31 102243](https://github.com/user-attachments/assets/877db7ea-eb1c-4e9c-93c9-aa07f37bea1a)
+
+
 
 - **Lists (`list`):**
   - **`questions_list`:** Stores questions fetched from the database for the current quiz. This list is shuffled and iterated through as users answer questions.
   - **`participants`:** Maintains a list of users participating in the quiz, enabling the bot to track who has answered and update scores accordingly.
+
+  
  
 
 ## Setup Instructions
@@ -77,6 +84,28 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
 - **!hello**: Greets the user and provides an introduction to the bot.
 - **!options**: Displays a list of available anime topics for the quiz.
 - **!quiz [anime_name]**: Starts a quiz on the specified anime. The bot uses the **!options** dictionary to retrieve and present questions.
+- **!history [anime_name]**: Provides the User's history of what scores they have had so far in that anime
+- **!language [language]**: Translates questions to the User's language preference
+
+### Host commands
+
+- **!end**: ends the on going game
+- **Next Button**: Goes to the next question
+
+### UI
+![image](https://github.com/user-attachments/assets/0a481a5d-104a-47ad-af0b-894face11a32)
+
+- Users press a button A, B or C for the answer
+- If the answer is incorrect, it will privately tell the user it was wrong
+![image](https://github.com/user-attachments/assets/fcd8c905-2207-4822-ac59-3129e28f5fc2)
+
+- if the answer was correct, then it will say it was correct
+![image](https://github.com/user-attachments/assets/b4816376-7e0d-441d-ba01-f7f701fbbae8)
+
+-if only the host of the game can click next to continue the game
+
+
+
 
 
 ## Project Structure
