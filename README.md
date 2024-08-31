@@ -70,5 +70,26 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
    docker build -t discord-trivia-bot .
    docker run -d discord-trivia-bot
 
+## Usage
+
+### Commands
+
+- **!hello**: Greets the user and provides an introduction to the bot.
+- **!options**: Displays a list of available anime topics for the quiz.
+- **!quiz [anime_name]**: Starts a quiz on the specified anime. The bot uses the **!options** dictionary to retrieve and present questions.
+
+
+## Project Structure
+
+- **main.py**: The main script that initializes the bot, defines commands, and manages server-specific data and interactions.
+- **questionBank.py**: Handles the database operations, including fetching questions and storing new entries.
+- **Translate.py**: Integrates Google Translate API to translate questions into different languages based on user preference.
+- **LoadQuestions.sql**: A SQL script that populates the database with initial quiz questions.
+- **QuizTables.sql**: A SQL script that defines the structure of the MySQL tables used by the bot.
+
+## Contribution
+
+Contributions are welcome! If you have ideas for new features or improvements, please fork the repository and submit a pull request.
+
    
 
