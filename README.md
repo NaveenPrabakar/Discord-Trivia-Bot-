@@ -1,5 +1,7 @@
 # Discord Anime Trivia Bot
 
+## Link to add to server: https://discord.com/oauth2/authorize?client_id=1264376375368880210&permissions=8&integration_type=0&scope=bot
+
 ## Overview
 
 The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia quizzes to Discord servers. It supports multiple servers, manages user scores, and offers multilingual quiz experiences using Google Translate API. The bot uses efficient data structures and MySQL for persistent storage, ensuring a smooth and scalable user experience.
