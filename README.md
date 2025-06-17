@@ -119,21 +119,55 @@ The Discord Anime Trivia Bot is a versatile bot that brings anime-themed trivia 
 
 -if only the host of the game can click next to continue the game
 
+### 🚀 New: Deploying on AWS EC2
 
+**Deploy your bot for 24/7 uptime and scalability using Amazon EC2.**
 
+#### Step-by-Step Guide
 
+1. **Create an AWS Account \& Launch EC2 Instance**
+    - Sign in to AWS, navigate to EC2, and launch a new instance (Ubuntu or Amazon Linux recommended)[^2][^3][^5][^4].
+    - Choose a free-tier eligible instance (e.g., t2.micro).
+    - Create and download a key pair for SSH access.
+2. **Connect to Your EC2 Instance**
+    - Use SSH to connect:
 
-## Project Structure
+```bash
+ssh -i path/to/your-key.pem ec2-user@<your-ec2-public-ip>
+```
 
-- **main.py**: The main script that initializes the bot, defines commands, and manages server-specific data and interactions.
-- **questionBank.py**: Handles the database operations, including fetching questions and storing new entries.
-- **Translate.py**: Integrates Google Translate API to translate questions into different languages based on user preference.
-- **LoadQuestions.sql**: A SQL script that populates the database with initial quiz questions.
-- **QuizTables.sql**: A SQL script that defines the structure of the MySQL tables used by the bot.
+3. **Install Dependencies on EC2**
+    - Update and install Python, pip, and Git:
 
-## Contribution
+```bash
+sudo yum update -y        # For Amazon Linux
+sudo yum install -y python3 git
+python3 -m ensurepip --upgrade
+```
 
-Contributions are welcome! If you have ideas for new features or improvements, please fork the repository and submit a pull request.
+4. **Clone the Repository**
+
+```bash
+git clone https://github.com/NaveenPrabakar/Discord-Anime-Trivia-Bot.git
+cd Discord-Anime-Trivia-Bot
+```
+
+5. **Install Python Dependencies**
+
+```bash
+pip3 install -r requirements.txt
+```
+
+6. **Set Up Environment Variables \& Database**
+    - Configure your `DISCORD_TOKEN` and MySQL credentials in `main.py`.
+    - Ensure your EC2 instance can connect to your MySQL database (consider using Amazon RDS for managed databases[^2]).
+7. **Run the Bot**
+
+```bash
+python3 main.py
+```
+
+    - For persistent uptime, consider using `tmux`, `screen`, or setting up a systemd service.
 
    
 
