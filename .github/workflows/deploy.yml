@@ -1,0 +1,41 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/${{ secrets.EC2_USERNAME }}/Discord-Trivia-Bot
+
+            # Attach to the existing tmux session named 'trivia', or create a new one if it doesn't exist
+            tmux attach -t trivia || tmux new-session -d -s trivia
+
+            # Stop the currently running process
+            pkill -f 'python main.py' || true
+
+            # Pull the latest changes
+            git pull origin main
+
+            # Install any new dependencies
+            pip install -r requirements.txt
+
+            # Restart the process
+            tmux send-keys -t trivia 'python main.py' C-m
+          EOF
+
