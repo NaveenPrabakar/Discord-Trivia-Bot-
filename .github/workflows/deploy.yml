@@ -26,7 +26,17 @@ jobs:
             # Pull the latest changes
             git pull origin main
 
-            tmux new -A -d -s trivia 'python3 main.py'
+            # Check if tmux session exists, create if not
+            tmux has-session -t trivia 2>/dev/null
+            if [ $? != 0 ]; then
+              tmux new-session -d -s trivia
+            fi
+
+            # Start the bot in tmux session
+            tmux send-keys -t trivia 'python3 main.py' C-m
+
+            # Detach from tmux session
+            tmux detach -s trivia
 
             
           EOF
