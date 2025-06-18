@@ -26,7 +26,10 @@ jobs:
             # Pull the latest changes
             git pull origin main
 
-            # Start the bot in tmux session
+            #Stop the bot
+            tmux send-keys -t trivia C-c
+
+            # Restart the bot
             tmux send-keys -t trivia 'python3 main.py' C-m
 
             
