@@ -26,12 +26,7 @@ jobs:
             # Pull the latest changes
             git pull origin main
 
-            tmux has-session -t trivia 2>/dev/null
-            if [ $? != 0 ]; then
-              tmux new-session -d -s trivia
-            fi
-            tmux send-keys -t trivia 'python3 main.py' C-m
-            tmux detach -s trivia
+            tmux new -A -d -s trivia 'python3 main.py'
 
             
           EOF
