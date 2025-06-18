@@ -26,12 +26,13 @@ jobs:
             # Pull the latest changes
             git pull origin main
 
-            # Attach to the existing tmux session named 'trivia', or create a new one if it doesn't exist
-            tmux attach -t trivia
-
-            # Restart the process
-            tmux send-keys -t trivia C-c 'python main.py' C-m
-
+            tmux has-session -t trivia 2>/dev/null
+            if [ $? != 0 ]; then
+              tmux new-session -d -s trivia
+            fi
+            tmux send-keys -t trivia 'python3 main.py' C-m
             tmux detach -s trivia
+
+            
           EOF
 
