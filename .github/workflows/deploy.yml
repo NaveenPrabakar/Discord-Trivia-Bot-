@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/${{ secrets.EC2_USERNAME }}/Discord-Trivia-Bot
+            cd /home/${{ secrets.EC2_USERNAME }}/Discord-Trivia-Bot-
 
             # Attach to the existing tmux session named 'trivia', or create a new one if it doesn't exist
             tmux attach -t trivia || tmux new-session -d -s trivia
